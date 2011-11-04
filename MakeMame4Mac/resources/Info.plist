@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+  <dict>
+    <key>CFBundleName</key>
+    <string>Mame</string>
+    
+    <key>CFBundleDisplayName</key>
+    <string>M.A.M.E.</string>
+    
+    <key>CFBundleIdentifier</key>
+    <string>org.mamedev.www</string>
+    
+    <key>CFBundleVersion</key>
+    <string>0.0.1</string>
+    
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    
+    <key>CFBundleSignature</key>
+    <string>mame</string>
+    
+    <key>CFBundleExecutable</key>
+    <string>launcher.sh</string>
+    
+    <key>CFBundleIconFile</key>
+    <string>mame.icns</string>
+  </dict>
+</plist>

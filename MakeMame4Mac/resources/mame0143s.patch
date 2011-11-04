@@ -1,0 +1,109 @@
+diff -ur mame_orig/makefile mame0143s/makefile
+--- mame_orig/makefile	2011-06-25 09:03:08.000000000 -0400
++++ mame0143s/makefile	2011-11-01 20:32:50.000000000 -0400
+@@ -168,7 +168,7 @@
+ #   optimize for G4:     ARCHOPTS = -mcpu=G4
+ # note that we leave this commented by default so that you can
+ # configure this in your environment and never have to think about it
+-# ARCHOPTS =
++ARCHOPTS = -march=core2
+ 
+ 
+ 
+@@ -200,7 +200,7 @@
+ #-------------------------------------------------
+ 
+ # uncomment next line if you are building for a 64-bit target
+-# PTR64 = 1
++PTR64 = 1
+ 
+ # uncomment next line if you are building for a big-endian target
+ # BIGENDIAN = 1
+Only in mame0143s: mame64
+Only in mame0143s: obj
+diff -ur mame_orig/src/osd/sdl/gl_shader_tool.c mame0143s/src/osd/sdl/gl_shader_tool.c
+--- mame_orig/src/osd/sdl/gl_shader_tool.c	2010-03-17 13:59:18.000000000 -0400
++++ mame0143s/src/osd/sdl/gl_shader_tool.c	2011-11-01 22:46:37.000000000 -0400
+@@ -164,57 +164,57 @@
+ 		if( param!=GL_PROGRAM_OBJECT_ARB && param!=GL_SHADER_OBJECT_ARB )
+ 		{
+ 			if ( CHECK_VERBOSE <= m )
+-				mame_printf_warning("%s:%d: GL Error: object type 0x%X generation failed\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Error: object type 0x%lX generation failed\n", file, line, (unsigned long)obj);
+ 			res=-1;
+ 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
+ 		{
+ 			if(param==GL_PROGRAM_OBJECT_ARB)
+-				mame_printf_warning("%s:%d: GL Error: object type 0x%X is PROGRAM, successful\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Error: object type 0x%lX is PROGRAM, successful\n", file, line, (unsigned long)obj);
+ 			else
+-				mame_printf_warning("%s:%d: GL Info: object type 0x%X is SHADER, successful\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Info: object type 0x%lX is SHADER, successful\n", file, line, (unsigned long)obj);
+ 		}
+ 		break;
+ 	  case GL_OBJECT_DELETE_STATUS_ARB:
+ 		if(param!=1)
+ 		{
+ 			if ( CHECK_ALWAYS_VERBOSE <= m )
+-				mame_printf_warning("%s:%d: GL Info: object 0x%X not yet marked for deletion\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Info: object 0x%lX not yet marked for deletion\n", file, line, (unsigned long)obj);
+ 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
+ 		{
+-			mame_printf_warning("%s:%d: GL Info: object 0x%X deletion successful\n", file, line, (unsigned int)obj);
++			mame_printf_warning("%s:%d: GL Info: object 0x%lX deletion successful\n", file, line, (unsigned long)obj);
+ 		}
+ 		break;
+ 	  case GL_OBJECT_COMPILE_STATUS_ARB:
+ 		if(param!=1)
+ 		{
+ 			if ( CHECK_VERBOSE <= m )
+-				mame_printf_warning("%s:%d: GL Error: object 0x%X compilation failed\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Error: object 0x%lX compilation failed\n", file, line, (unsigned long)obj);
+ 			res=-1;
+ 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
+ 		{
+-			mame_printf_warning("%s:%d: GL Info: object 0x%X compiled successful\n", file, line, (unsigned int)obj);
++			mame_printf_warning("%s:%d: GL Info: object 0x%lX compiled successful\n", file, line, (unsigned long)obj);
+ 		}
+ 		break;
+ 	  case GL_OBJECT_LINK_STATUS_ARB:
+ 		if(param!=1)
+ 		{
+ 			if ( CHECK_VERBOSE <= m )
+-				mame_printf_warning("%s:%d: GL Error: object 0x%X linking failed\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Error: object 0x%lX linking failed\n", file, line, (unsigned long)obj);
+ 			res=-1;
+ 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
+ 		{
+-			mame_printf_warning("%s:%d: GL Info: object 0x%X linked successful\n", file, line, (unsigned int)obj);
++			mame_printf_warning("%s:%d: GL Info: object 0x%lX linked successful\n", file, line, (unsigned long)obj);
+ 		}
+ 		break;
+ 	  case GL_OBJECT_VALIDATE_STATUS_ARB:
+ 		if(param!=1)
+ 		{
+ 			if ( CHECK_VERBOSE <= m )
+-				mame_printf_warning("%s:%d: GL Error: object 0x%X validation failed\n", file, line, (unsigned int)obj);
++				mame_printf_warning("%s:%d: GL Error: object 0x%lX validation failed\n", file, line, (unsigned long)obj);
+ 			res=-1;
+ 		} else if ( CHECK_ALWAYS_VERBOSE <= m )
+ 		{
+-			mame_printf_warning("%s:%d: GL Info: object 0x%X validation successful\n", file, line, (unsigned int)obj);
++			mame_printf_warning("%s:%d: GL Info: object 0x%lX validation successful\n", file, line, (unsigned long)obj);
+ 		}
+ 		break;
+ 	 }
+Only in mame0143s/src/osd/sdl: gl_shader_tool.c~
+diff -ur mame_orig/src/osd/sdl/sdl.mak mame0143s/src/osd/sdl/sdl.mak
+--- mame_orig/src/osd/sdl/sdl.mak	2011-05-20 02:50:50.000000000 -0400
++++ mame0143s/src/osd/sdl/sdl.mak	2011-11-01 20:32:50.000000000 -0400
+@@ -409,7 +409,8 @@
+ 
+ ifndef MACOSX_USE_LIBSDL
+ # Compile using framework (compile using libSDL is the exception)
+-LIBS += -framework SDL -framework Cocoa -framework OpenGL -lpthread
++INCPATH += `sdl-config --cflags | sed 's:/SDL::'`
++LIBS += `sdl-config --libs | sed 's/-lSDLmain//'` -framework OpenGL -lpthread
+ else
+ # Compile using installed libSDL (Fink or MacPorts):
+ #
