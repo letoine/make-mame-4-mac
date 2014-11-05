@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2011 Antoine Terrienne antoine.terrienne at gmail.com
+# Copyright (c) 2011-2014 Antoine Terrienne antoine.terrienne at gmail.com
 #
 # This file is part of MaleMame4Mac.
 #

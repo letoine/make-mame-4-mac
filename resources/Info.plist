@@ -12,7 +12,7 @@
     <string>org.mamedev.www</string>
     
     <key>CFBundleVersion</key>
-    <string>0.0.1</string>
+    <string>0.0.MAME_VERSION</string>
     
     <key>CFBundlePackageType</key>
     <string>APPL</string>

@@ -1,0 +1,14 @@
+diff -rU 4 SDL2-2.0.3/CMakeLists.txt SDL/CMakeLists.txt
+--- SDL2-2.0.3/CMakeLists.txt	2014-03-15 22:31:41.000000000 -0400
++++ SDL/CMakeLists.txt	2014-11-04 17:56:06.000000000 -0500
+@@ -947,8 +947,9 @@
+     message_error("SDL_FILE must be enabled to build on MacOS X")
+   endif()
+ 
+   if(SDL_AUDIO)
++    set(SDL_AUDIO_DRIVER_COREAUDIO 1)
+     set(MACOSX_COREAUDIO 1)
+     file(GLOB AUDIO_SOURCES ${SDL2_SOURCE_DIR}/src/audio/coreaudio/*.c)
+     set(SOURCE_FILES ${SOURCE_FILES} ${AUDIO_SOURCES})
+     set(HAVE_SDL_AUDIO TRUE)
+Only in SDL: CMakeLists.txt~

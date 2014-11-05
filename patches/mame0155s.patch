@@ -1,0 +1,18 @@
+diff -rU 4 MAME_orig/src/osd/sdl/sdl.mak MAME/src/osd/sdl/sdl.mak
+--- MAME_orig/src/osd/sdl/sdl.mak	2014-09-12 04:07:48.000000000 -0400
++++ MAME/src/osd/sdl/sdl.mak	2014-10-29 16:02:47.000000000 -0400
+@@ -498,12 +498,12 @@
+ # Remove the "/SDL" component from the include path so that we can compile
+ 
+ # files (header files are #include "SDL/something.h", so the extra "/SDL"
+ # causes a significant problem)
+-INCPATH += `sdl-config --cflags | sed 's:/SDL::'`
++INCPATH += `$(SDL_CONFIG) --cflags  | sed -e 's:/SDL[2]*::' -e 's:\(-D[^ ]*\)::g'`
+ CCOMFLAGS += -DNO_SDL_GLEXT
+ # Remove libSDLmain, as its symbols conflict with SDLMain_tmpl.m
+-LIBS += `sdl-config --libs | sed 's/-lSDLmain//'` -lpthread -framework OpenGL
++LIBS += `$(SDL_CONFIG) --libs | sed 's/-lSDLmain//'` -lpthread -framework OpenGL
+ DEFS += -DMACOSX_USE_LIBSDL
+ endif   # MACOSX_USE_LIBSDL
+ 
+ else   # ifeq ($(TARGETOS),macosx)
